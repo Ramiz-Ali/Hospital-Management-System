@@ -1,5 +1,5 @@
 import Auth from '../models/authModel.js';
-import { hashPassword, comparePassword } from '../services/authService.js';
+import { hashPassword, comparePassword , generateTokken } from '../services/authService.js';
 
 export const registerController = async (req, res) => {
     try {
@@ -36,10 +36,12 @@ export const loginController = async (req, res) => {
     if (!isMatch) {
       return res.status(400).json({ message: 'Invalid email or password' });
     }
+    const token = generateTokken(user._id)
 
 
     res.status(200).json({
       message: 'Login successful',
+      token,
       user: {
         id: user._id,
         name: user.name,
